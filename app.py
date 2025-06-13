@@ -63,7 +63,7 @@ def count_present_students():
 def update_attendance_sheet(student_details, entry_time, sheet_name='Attendance', is_dl=False):
     """Update attendance sheet for the student."""
     today = datetime.now().strftime("%d-%m-%y")
-    output_folder = DL_FOLDER if is_dl else OUTPUT_FOLDER
+    output_folder = OUTPUT_FOLDER
     output_file = os.path.join(output_folder, f'{sheet_name}_{today}.xlsx')
 
     # Create workbook if file doesn't exist
@@ -131,11 +131,7 @@ def index():
 
                 # Update attendance
                 update_attendance_sheet(student_details, current_time, 'Attendance')
-                if action == 'yes':
-                    update_attendance_sheet(student_details, current_time, 'Attendance_DL', is_dl=True)
-                    message = "Library attendance recorded successfully"
-                else:
-                    message = "Book borrowing/return recorded successfully"
+                message = "Book borrowing/return recorded successfully"
             else:
                 message = "Roll number not found"
 
