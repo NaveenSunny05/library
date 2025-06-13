@@ -9,7 +9,6 @@ app = Flask(__name__)
 # Configure directories
 DATASET_FOLDER = 'datasets'
 OUTPUT_FOLDER = 'outputs'
-DL_FOLDER = os.path.join(OUTPUT_FOLDER, 'DL')
 
 app.config['DATASET_FOLDER'] = DATASET_FOLDER
 app.config['OUTPUT_FOLDER'] = OUTPUT_FOLDER
@@ -17,7 +16,6 @@ app.config['OUTPUT_FOLDER'] = OUTPUT_FOLDER
 # Ensure directories exist
 os.makedirs(DATASET_FOLDER, exist_ok=True)
 os.makedirs(OUTPUT_FOLDER, exist_ok=True)
-os.makedirs(DL_FOLDER, exist_ok=True)
 
 
 def find_roll_number(roll_number):
@@ -48,8 +46,8 @@ def count_present_students():
     """Count students without 'Time Out' in Digital Library for today."""
     count = 0
     today = datetime.now().strftime("%d-%m-%y")
-    today_file = f'Attendance_DL_{today}.xlsx'
-    today_path = os.path.join(DL_FOLDER, today_file)
+    today_file = f'Attendance{today}.xlsx'
+    today_path = os.path.join(OUTPUT_FOLDER, today_file)
 
     if os.path.exists(today_path):
         wb = openpyxl.load_workbook(today_path)
@@ -131,7 +129,7 @@ def index():
 
                 # Update attendance
                 update_attendance_sheet(student_details, current_time, 'Attendance')
-                message = "Book borrowing/return recorded successfully"
+                message = "Library Attendance recorded successfully"
             else:
                 message = "Roll number not found"
 
@@ -147,7 +145,7 @@ def index():
 
 @app.route('/download_attendance/<filename>')
 def download_attendance(filename):
-    folder = OUTPUT_FOLDER if 'DL' not in filename else DL_FOLDER
+    folder = OUTPUT_FOLDER 
     return send_file(os.path.join(folder, filename), as_attachment=True)
 
 
